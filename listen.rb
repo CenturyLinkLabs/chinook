@@ -24,13 +24,16 @@ post '/pr' do
   repo_name = res['pull_request']['head']['repo']['name']
   sha = res['pull_request']['head']['sha']
 
-  if action == 'opened'
+  if action == 'opened' #todo what about reopened?
     puts 'DOIN WORK'
     `mkdir projects`
     Dir.chdir 'projects'
     `git clone #{clone_url} #{repo_name}`
     Dir.chdir repo_name
     `git checkout #{sha}`
+    `docker-machine create --driver digitalocean --digitalocean-access-token #{ENV['DO_TOKEN']} todo_allow_name_to_be_configurable`
+    puts 'DO TOKEN: ', ENV['DO_TOKEN']
+    #TODO: clean up 
   else
     puts 'DO NOTHING'
   end
