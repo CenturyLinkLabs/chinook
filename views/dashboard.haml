@@ -4,3 +4,6 @@ HI
   - @envs.each do |k,v|
     %dt=k
     %dd=v
+    %dd
+      %form{action: "/environment/delete/#{k}", method: "post"}
+        %button DELETE

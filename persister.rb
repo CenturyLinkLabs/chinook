@@ -6,11 +6,15 @@ class Persister
   include Singleton
 
   def initialize
-    @redis = Redis.new(:host => "0.0.0.0", :port => 6379, :db => 15)
+    @redis = Redis.new(:host => "0.0.0.0", :port => 6379, :db => 'chinook')
   end
 
   def exists?(k)
     @redis.exists(k)
+  end
+
+  def delete(k)
+    @redis.del(k)
   end
 
   def list

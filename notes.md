@@ -4,3 +4,6 @@
 4. If it was not matched to an existing deployment, provision and env
 5. lookup and find env matching deployment name and deploy to it
 
+TODO
+* cleanup for all stuff
+* persistance of project information

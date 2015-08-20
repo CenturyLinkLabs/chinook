@@ -1,18 +1,17 @@
 require 'yaml'
 
 class Environment
-  def initialize(persister:, project:, name:, sha:)
+  def initialize(persister:, project:nil, name:)
     @persister = persister
     @project = project
     @name = name
-    @sha = sha
   end
 
-  def find_or_create
+  def find_or_create(sha)
     puts 'DOIN WORK'
     @project.clone
     @project.in_directory do
-      `git checkout #{@sha}`
+      `git checkout #{sha}`
     end
     puts 'about to provision...'
     provision_machine
@@ -44,8 +43,11 @@ class Environment
         env[k]=YAML.load(v)
       end
     end
-    props = { env: env }
-   @persister.write(@name, props)
+    props = { 
+      env: env,
+      created_at: Time.now
+    }
+    @persister.write(@name, props)
   end
 
   def set_env
@@ -64,10 +66,9 @@ class Environment
     puts "done deploying...\n\n"
   end
 
-  #TODO
-  #def delete(machine_name)
-  #  `docker-machine kill #{machine_name}`
-  #  `docker-machine rm -f #{machine_name}`
-  #  Persister.instance.delete(machine_name)
-  #end
+  def delete
+    `docker-machine kill #{@name}`
+    `docker-machine rm -f #{@name}`
+    Persister.instance.delete(@name)
+  end
 end

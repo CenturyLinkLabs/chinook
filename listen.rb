@@ -29,6 +29,21 @@ post '/gh-hook' do
   puts "-------------------------"
 
   if %w(opened reopened).include? action
+    create_and_deploy(repo_name, clone_url, ref, sha)
+  end
+end
+
+post '/environment/delete/:name' do |name|
+    environment = Environment.new(
+      persister: Persister.instance,
+      name: name
+    )
+    environment.delete
+end
+
+private
+
+def create_and_deploy(repo_name, clone_url, ref, sha)
     project = Project.new(
       name: repo_name,
       clone_url: clone_url
@@ -36,10 +51,8 @@ post '/gh-hook' do
     environment = Environment.new(
       persister: Persister.instance,
       project: project,
-      name: ref,
-      sha: sha
+      name: ref
     )
-    environment.find_or_create
+    environment.find_or_create(sha)
     environment.deploy
-  end
 end
