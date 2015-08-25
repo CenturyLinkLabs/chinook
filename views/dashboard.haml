@@ -1,9 +1,11 @@
 HI
 
-%dl
-  - @envs.each do |k,v|
-    %dt=k
-    %dd=v
-    %dd
-      %form{action: "/environment/delete/#{k}", method: "post"}
-        %button DELETE
+- @envs.each do |k,v|
+  .environment
+    %h2=k
+    %p= "Created at: #{v['created_at']}"
+    %p= "Host: #{v['env']["DOCKER_HOST"].match(/[0-9.]+/)[0]}"
+    %form{action: "/environment/delete/#{k}", method: "post"}
+      %button DELETE
+    = " | "
+    %a{ href: "/environment/refresh/#{k}" } refresh

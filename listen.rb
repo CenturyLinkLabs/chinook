@@ -41,6 +41,14 @@ post '/environment/delete/:name' do |name|
     environment.delete
 end
 
+get '/environment/refresh/:name' do |name|
+    environment = Environment.new(
+      persister: Persister.instance,
+      name: name
+    )
+    environment.save
+end
+
 private
 
 def create_and_deploy(repo_name, clone_url, ref, sha)

@@ -7,3 +7,7 @@
 TODO
 * cleanup for all stuff
 * persistance of project information
+
+ISSUES
+* when docker machine doesn't work... often it's missing certs, etc.
+* build doesn't rebuild even when code has changed
